@@ -7,7 +7,7 @@ class AddPostUs {
   final PosrtRepo posrtRepo;
 
   AddPostUs({required this.posrtRepo});
-  Future<Either<Failure, Unit>> call(Post post) async {
+  Future<Either<Failure, bool>> call(Post post) async {
     return await posrtRepo.addPost(post);
   }
 }

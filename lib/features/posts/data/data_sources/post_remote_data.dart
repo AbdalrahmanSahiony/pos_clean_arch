@@ -8,7 +8,7 @@ import 'package:dartz/dartz.dart';
 abstract class PostRemoteDataSource {
   Future<List<PostModel>> getAllPost();
   Future<Unit> deletePost(int id);
-  Future<Unit> addPost(PostModel postModel);
+  Future<bool> addPost(PostModel postModel);
   Future<Unit> updatePost(PostModel postModel);
 }
 
@@ -17,10 +17,10 @@ class PostRemoteDataSourceImpl implements PostRemoteDataSource {
 
   PostRemoteDataSourceImpl({required this.api});
   @override
-  Future<Unit> addPost(PostModel postModel) {
+  Future<bool> addPost(PostModel postModel) {
     api.post(EndPoints.baserUrl,
         data: {"title": postModel.title, "body": postModel.body});
-    return Future.value(Unit as FutureOr<Unit>?);
+    return Future.value(true);
   }
 
   @override

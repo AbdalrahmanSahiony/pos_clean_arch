@@ -16,9 +16,20 @@ class PostReboData implements PosrtRepo {
   PostReboData(this.checkInternt,
       {required this.postRemotDataSource, required this.postLocalDataSource});
   @override
-  Future<Either<Failure, Unit>> addPost(Post post) {
-    return postEdit(() => postRemotDataSource
-        .addPost(PostModel(title: post.title, body: post.body)));
+  Future<Either<Failure, bool>> addPost(Post post) async {
+    //  return postEdit(() => postRemotDataSource
+    //    .addPost(PostModel(title: post.title, body: post.body)));
+    if (await checkInternt.isConnected) {
+      try {
+        await postRemotDataSource
+            .addPost(PostModel(title: post.title, body: post.body));
+        return const Right(true);
+      } on ServerException catch (e) {
+        return Left(Failure(errMessage: e.errorModel.errorMessage));
+      }
+    } else {
+      return Left(Failure(errMessage: "No Internet Connecation"));
+    }
   }
 
   @override
